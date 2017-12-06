@@ -9,7 +9,7 @@ include_directories(lib/googletest-release-1.8.0/googletest/include)
 include_directories(lib/googletest-release-1.8.0/googlemock/include)
 
 set(TEST_FILES Tests/main.cpp Board.cpp Board.h Cell.cpp Cell.h DisplayGameOnConsole.cpp DisplayGameOnConsole.h HumanPlayer.cpp HumanPlayer.h GameLogic.cpp GameLogic.h Point.cpp Point.h HumanEnemyGameFlow.cpp HumanEnemyGameFlow.h DisplayGame.h Player.h AbstractGameLogic.h AIPlayer.cpp AIPlayer.h GameFlow.h AIEnemyGameFlow.cpp AIEnemyGameFlow.h Tests/GameLogicTest.cpp Tests/GameLogicTest.h Tests/HumanEnemyGameFlowTest.cpp Tests/HumanEnemyGameFlowTest.h Tests/AIEnemyGameFlowTest.cpp Tests/AIEnemyGameFlowTest.h Tests/AIPlayerTest.cpp Tests/AIPlayerTest.h)
-set(SOURCE_FILES main.cpp Board.cpp Board.h Cell.cpp Cell.h DisplayGameOnConsole.cpp DisplayGameOnConsole.h HumanPlayer.cpp HumanPlayer.h GameLogic.cpp GameLogic.h Point.cpp Point.h HumanEnemyGameFlow.cpp HumanEnemyGameFlow.h DisplayGame.h Player.h AbstractGameLogic.h AIPlayer.cpp AIPlayer.h GameFlow.h AIEnemyGameFlow.cpp AIEnemyGameFlow.h RemoteEnemyGameFlow.cpp RemoteEnemyGameFlow.h)
+set(SOURCE_FILES main.cpp Board.cpp Board.h Cell.cpp Cell.h DisplayGameOnConsole.cpp DisplayGameOnConsole.h HumanPlayer.cpp HumanPlayer.h GameLogic.cpp GameLogic.h Point.cpp Point.h HumanEnemyGameFlow.cpp HumanEnemyGameFlow.h DisplayGame.h Player.h AbstractGameLogic.h AIPlayer.cpp AIPlayer.h GameFlow.h AIEnemyGameFlow.cpp AIEnemyGameFlow.h Client.cpp Client.h RemoteEnemyGameFlow.cpp RemoteEnemyGameFlow.h)
 
 add_executable(ex4.out ${SOURCE_FILES})
 add_executable(test_main ${TEST_FILES})
