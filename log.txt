@@ -1,0 +1,65 @@
+commit b58bd14830abc79f2aa064a83c91e9e0f1ae48fe
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Tue Nov 28 14:54:03 2017 +0200
+
+    new changes 28.11.17
+
+commit d96ef9b8f11e011b6614a5c9683c9a70969a87c1
+Author: Udi <udigoldman1@gmail.com>
+Date:   Sun Nov 26 20:42:08 2017 +0200
+
+    AIPlayerTest 26/11 20:41
+
+commit bf6a03b841a251eaca34f2c50edf28c3a05742dd
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Sat Nov 25 23:29:50 2017 +0200
+
+    new changes 25.11.17
+
+commit 8f3e377ac4f81f3246e68efb5802f7cea6207606
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Fri Nov 24 13:12:26 2017 +0200
+
+    new new changes 24.11.17
+
+commit 025f43e331990fa26f3d7b95631c2aa5c234ebcb
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Fri Nov 24 12:57:02 2017 +0200
+
+    new changes 24.11.17
+
+commit b786444eab6756658a6893469bc22fb1066d095b
+Author: Udi <udigoldman1@gmail.com>
+Date:   Thu Nov 23 15:09:54 2017 +0200
+
+    two tests 11\23
+
+commit aee2c324d8fb4f9cb26c2a05dced2327304b8700
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Thu Nov 23 14:18:39 2017 +0200
+
+    new new changes 23.11.17
+
+commit f792103ad0f4817a7ec07a5bf52243bd60f6dada
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Thu Nov 23 12:16:51 2017 +0200
+
+    new changes 23.11.17
+
+commit 20ee0377536ad90d890e2d1e19ce3fdaed115bf6
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Thu Nov 23 10:17:49 2017 +0200
+
+    new changes 23.11.17
+
+commit e30488f888778eb33a047c58bee997db89ad59fb
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Mon Nov 20 11:31:32 2017 +0200
+
+    new changes
+
+commit 5e8fad33ba97dfecbab02d864281b3536e835c0f
+Author: Aviya <aviya.goldf@gmail.com>
+Date:   Thu Nov 16 13:19:14 2017 +0200
+
+    Initial commit
