@@ -55,8 +55,6 @@ int main() {
         } catch (const char *msg) {
             cout << "Reason: " << msg << endl;
         }
-
-
     }
     
     int x, y;
