@@ -3,7 +3,7 @@
 //
 
 #include "Client.h"
-#include "ClientGameFlow.h"
+#include "RemoteEnemyGameFlow.h"
 #include <iostream>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -13,10 +13,10 @@
 #include <string.h>
 #include <unistd.h>
 
-ClientGameFlow::ClientGameFlow(Player *myPlayer, Player *otherPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole) :
+RemoteEnemyGameFlow::RemoteEnemyGameFlow(Player *myPlayer, Player *otherPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole) :
         GameFlow(myPlayer, otherPlayer, gameLogic, displayGameOnConsole){}
 
-bool ClientGameFlow::chosenCellValidity(vector<Point> possibleMovesVector, Point chosenCell){
+bool RemoteEnemyGameFlow::chosenCellValidity(vector<Point> possibleMovesVector, Point chosenCell){
     for(int i = 0; i < possibleMovesVector.size(); i++){
         if(possibleMovesVector[i].isEqual(chosenCell)){
             return true;
@@ -25,7 +25,7 @@ bool ClientGameFlow::chosenCellValidity(vector<Point> possibleMovesVector, Point
     return false;
 }
 
-void ClientGameFlow::setNextTurn(){
+void RemoteEnemyGameFlow::setNextTurn(){
     if(this->turn == blackPlayer){
         this->turn = whitePlayer;
         this->nextTurn = blackPlayer;
@@ -36,8 +36,13 @@ void ClientGameFlow::setNextTurn(){
     }
 }
 
-void ClientGameFlow::playTheGame() {
+void RemoteEnemyGameFlow::playTheGame() {
     //initialize the turns
+
+    int clientSocket, n;
+    string myColor, enemyColor;
+    string myChoice;
+    string enemyChoice;
 
     this->turn = blackPlayer;
     this->nextTurn = whitePlayer;
@@ -143,5 +148,5 @@ void ClientGameFlow::playTheGame() {
     cout << endl;
 }
 
-ClientGameFlow::~HumanEnemyGameFlow() {
+RemoteEnemyGameFlow::~HumanEnemyGameFlow() {
 

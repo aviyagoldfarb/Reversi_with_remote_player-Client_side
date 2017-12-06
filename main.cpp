@@ -16,10 +16,10 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
-#include "ClientGameFlow.h"
+#include "RemoteEnemyGameFlow.h"
 
 
-GameFlow* getClientGameFlow(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole, GameFlow **gameFlow) {
+GameFlow* getRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole, GameFlow **gameFlow) {
     Client client("127.0.0.1", 8000);
     int clientSocket, n;
     string myColor, enemyColor;
@@ -47,14 +47,14 @@ GameFlow* getClientGameFlow(Player **blackPlayer, Player **whitePlayer, Abstract
         myColor = "X";
         enemyColor = "O";
         cout << "You are X." << endl;
-        gameFlow = new clientGameFlow(*blackPlayer, *whitePlayer, gameLogic, displayGameOnConsole);
+        gameFlow = new RemoteEnemyGameFlow(*blackPlayer, *whitePlayer, gameLogic, displayGameOnConsole);
         return *gameFlow;
     }
     if (myNumberColor == 2) {
         myColor = "O";
         enemyColor = "X";
         cout << "You are O." << endl;
-        gameFlow = new clientGameFlow(*whitePlayer, *blackPlayer, gameLogic, displayGameOnConsole);
+        gameFlow = new RemoteEnemyGameFlow(*whitePlayer, *blackPlayer, gameLogic, displayGameOnConsole);
         return *gameFlow;
     }
 }
@@ -90,7 +90,7 @@ void gameMenu(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gam
         case 'r':
             {
                 //the player choose a remote player as enemy
-                *gameFlow = getClientGameFlow(blackPlayer, whitePlayer, gameLogic, displayGameOnConsole, gameFlow);
+                *gameFlow = getRemoteEnemyGameFlow(blackPlayer, whitePlayer, gameLogic, displayGameOnConsole, gameFlow);
                 break;
             }
     }

@@ -10,7 +10,7 @@
 /**
  * the class HumanEnemyGameFlow defines HumanEnemyGameFlow object.
  */
-class ClientGameFlow: public GameFlow {
+class RemoteEnemyGameFlow: public GameFlow {
 public:
     /**
      * constructor of HumanEnemyGameFlow object.
@@ -19,7 +19,7 @@ public:
      * @param gameLogic
      * @param DisplayGameOnConsole
      */
-    ClientGameFlow(Player *myPlayer, Player *otherPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole);
+    RemoteEnemyGameFlow(Player *myPlayer, Player *otherPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole);
     /**
      * checks if the chosen cell is in the possibleMovesVector.
      * @param possibleMovesVector
