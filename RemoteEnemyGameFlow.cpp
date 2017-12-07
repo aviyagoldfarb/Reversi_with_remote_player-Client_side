@@ -14,7 +14,7 @@
 #include <unistd.h>
 
 RemoteEnemyGameFlow::RemoteEnemyGameFlow(Player *mySelfPlayer, Player *remoteEnemyPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole) :
-        GameFlow(mySelfPlayer, remoteEnemyPlayer, gameLogic, displayGameOnConsole){}
+        GameFlow(mySelfPlayer, remoteEnemyPlayer, gameLogic, displayGameOnConsole), mySelfPlayer(mySelfPlayer), remoteEnemyPlayer(remoteEnemyPlayer){}
 
 bool RemoteEnemyGameFlow::chosenCellValidity(vector<Point> possibleMovesVector, Point chosenCell){
     for(int i = 0; i < possibleMovesVector.size(); i++){
@@ -43,6 +43,15 @@ void RemoteEnemyGameFlow::playTheGame() {
     string myChoice;
     string enemyChoice;
 
+    if (mySelfPlayer->getPlayerSign() == BLACK){
+        blackPlayer = mySelfPlayer;
+        whitePlayer = remoteEnemyPlayer;
+    }
+    else{
+        blackPlayer = remoteEnemyPlayer;
+        whitePlayer = mySelfPlayer;
+    }
+
     //initialize the turns
     this->turn = blackPlayer;
     this->nextTurn = whitePlayer;
@@ -51,28 +60,11 @@ void RemoteEnemyGameFlow::playTheGame() {
     vector<Point> possibleMovesVector;
     int x, y;
 
-    cout << "Waiting for other player's move..." << endl;
-    try {
-
-        int n = read(clientSocket, &enemyChoice, sizeof(enemyChoice));
-        if (n == -1) {
-            throw "Error in reading the other player's move from socket";
-        }
-    } catch (const char *msg) {
-        cout << "Reason: " << msg << endl;
-    }
 
 
 
-        try {
-            enemyChoice = client.sendCell(myChoice);
-            cout << enemyColor << " played:" << " (" << enemyChoice << ")" << endl;
-        } catch (const char *msg) {
-            cout << "Failed to send the new cell to server. Reason: " << msg << endl;
-        }
-        if (findNewCell(enemyChoice)) {
-            return 0;
-        }
+
+
 
 
 
@@ -107,7 +99,7 @@ void RemoteEnemyGameFlow::playTheGame() {
 
 
         //check if the current player is the first to connect player (black)
-        if(this->turn->getPlayerSign() == blackPlayer->getPlayerSign()){
+        if(this->turn->getPlayerSign() == mySelfPlayer->getPlayerSign()){
             //loop until the player enters appropriate cell
             do {
                 cout << "Please enter your move row col: ";
@@ -132,8 +124,31 @@ void RemoteEnemyGameFlow::playTheGame() {
                 }
             } while (1);
 
+            try {
+                enemyChoice = client.sendCell(myChoice);
+                cout << enemyColor << " played:" << " (" << enemyChoice << ")" << endl;
+            } catch (const char *msg) {
+                cout << "Failed to send the new cell to server. Reason: " << msg << endl;
+            }
+
         }
         else{//the current player is the second to connect player (white)
+
+
+            cout << "Waiting for other player's move..." << endl;
+            try {
+
+                int n = read(clientSocket, &enemyChoice, sizeof(enemyChoice));
+                if (n == -1) {
+                    throw "Error in reading the other player's move from socket";
+                }
+            } catch (const char *msg) {
+                cout << "Reason: " << msg << endl;
+            }
+
+
+
+
             //downcast
             RemotePlayer *remotePlayer = static_cast<RemotePlayer *>(this->turn);
             Point chosenCell = remotePlayer->/*miniMaxAlgorithm(possibleMovesVector, gameLogic, this->nextTurn)*/;
