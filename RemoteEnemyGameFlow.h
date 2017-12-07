@@ -41,7 +41,7 @@ public:
      */
     virtual ~HumanEnemyGameFlow();
 private:
-    //pointers to Player object
+    //pointers to Player
     Player *mySelfPlayer, *remoteEnemyPlayer;
 };
 
