@@ -2,7 +2,7 @@
 // Created by udi on 04/12/17.
 //
 
-#include "Client.h"
+#include "RemotePlayer.h"
 #include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -12,11 +12,37 @@
 #include <unistd.h>
 
 using namespace std;
-Client::Client(const char *serverIP, int serverPort): serverIP(serverIP), serverPort(serverPort), clientSocket(0) {
-    cout << "Client" << endl;
+
+RemotePlayer::RemotePlayer(Sign playerSign = EMPTY, const char *serverIP, int serverPort):
+        Player(playerSign), serverIP(serverIP), serverPort(serverPort), clientSocket(0) {
+    cout << "RemotePlayer" << endl;
 }
 
-int Client::connectToServer() {
+RemotePlayer::RemotePlayer(RemotePlayer *otherPlayer) : Player(otherPlayer){
+
+}
+
+Sign RemotePlayer::getPlayerSign() const {
+    return playerSign;
+}
+
+void RemotePlayer::setPlayerSign(Sign playerSign) {
+    this->playerSign = playerSign;
+}
+
+int RemotePlayer::getPlayerScore() const {
+    return playerScore;
+}
+
+void RemotePlayer::setPlayerScore(int addToPlayerScore) {
+    this->playerScore += addToPlayerScore;
+}
+
+RemotePlayer::~RemotePlayer() {
+
+}
+
+int RemotePlayer::connectToServer() {
     // Create a socket point
     clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (clientSocket == -1) {
@@ -50,7 +76,7 @@ int Client::connectToServer() {
     return this->clientSocket;
 }
 
-string Client::sendCell(string newCell) {
+string RemotePlayer::sendCell(string newCell) {
 // Write the exercise arguments to the socket
     int n = write(clientSocket, &newCell, sizeof(newCell));
     if (n == -1) {

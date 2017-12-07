@@ -2,25 +2,25 @@
 // Udi Goldman 301683264 , Aviya Goldfarb 201509635
 //
 
-#ifndef EX2_HUMANENEMYGAMEFLOW_H
-#define EX2_HUMANENEMYGAMEFLOW_H
+#ifndef EX2_REMOTEENEMYGAMEFLOW_H
+#define EX2_REMOTEENEMYGAMEFLOW_H
 
 #include "GameFlow.h"
-//hellow
+
 
 /**
- * the class HumanEnemyGameFlow defines HumanEnemyGameFlow object.
+ * the class RemoteEnemyGameFlow defines RemoteEnemyGameFlow object.
  */
 class RemoteEnemyGameFlow: public GameFlow {
 public:
     /**
-     * constructor of HumanEnemyGameFlow object.
-     * @param myPlayer
-     * @param otherPlayer
+     * constructor of RemoteEnemyGameFlow object.
+     * @param mySelfPlayer
+     * @param remoteEnemyPlayer
      * @param gameLogic
      * @param DisplayGameOnConsole
      */
-    RemoteEnemyGameFlow(Player *myPlayer, Player *otherPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole);
+    RemoteEnemyGameFlow(Player *mySelfPlayer, Player *remoteEnemyPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole);
     /**
      * checks if the chosen cell is in the possibleMovesVector.
      * @param possibleMovesVector
@@ -43,4 +43,4 @@ public:
 
 };
 
-#endif //EX2_HUMANENEMYGAMEFLOW_H
+#endif //EX2_REMOTEENEMYGAMEFLOW_H

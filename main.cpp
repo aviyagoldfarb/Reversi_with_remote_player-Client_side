@@ -1,6 +1,6 @@
 //
 // Udi Goldman 301683264 , Aviya Goldfarb 201509635
-//hello
+//
 
 #include "Board.h"
 #include "HumanPlayer.h"
@@ -8,7 +8,8 @@
 #include "DisplayGameOnConsole.h"
 #include "HumanEnemyGameFlow.h"
 #include "AIEnemyGameFlow.h"
-#include "Client.h"
+#include "RemotePlayer.h"
+#include "RemoteEnemyGameFlow.h"
 #include <iostream>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -16,17 +17,15 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
-#include "RemoteEnemyGameFlow.h"
 
 
-GameFlow* getRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole, GameFlow **gameFlow) {
-    Client client("127.0.0.1", 8000);
+
+void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole, GameFlow **gameFlow) {
+    RemotePlayer *client = new RemotePlayer(EMPTY, "127.0.0.1", 8000);
     int clientSocket, n;
     string myColor, enemyColor;
     string myChoice;
     string enemyChoice;
-    *whitePlayer = new HumanPlayer(WHITE);
-    *blackPlayer = new HumanPlayer(BLACK);
     try {
         clientSocket = client.connectToServer();
     } catch (const char *msg) {
@@ -37,7 +36,7 @@ GameFlow* getRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abs
     try {
         n = read(clientSocket, &myNumberColor, sizeof(myNumberColor));
         if (n == -1) {
-            throw "Error reading number of the player from socket";
+            throw "Error- failed on reading number of player from socket";
         }
     } catch(const char *msg) {
         cout << "Reason: " << msg << endl;
@@ -47,15 +46,21 @@ GameFlow* getRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abs
         myColor = "X";
         enemyColor = "O";
         cout << "You are X." << endl;
-        gameFlow = new RemoteEnemyGameFlow(*blackPlayer, *whitePlayer, gameLogic, displayGameOnConsole);
-        return *gameFlow;
+        *blackPlayer = new HumanPlayer(BLACK);
+        client->setPlayerSign(WHITE);
+        *whitePlayer = client;
+        *gameFlow = new RemoteEnemyGameFlow(*blackPlayer, *whitePlayer, gameLogic, displayGameOnConsole);
+        return;
     }
     if (myNumberColor == 2) {
         myColor = "O";
         enemyColor = "X";
         cout << "You are O." << endl;
-        gameFlow = new RemoteEnemyGameFlow(*whitePlayer, *blackPlayer, gameLogic, displayGameOnConsole);
-        return *gameFlow;
+        *whitePlayer = new HumanPlayer(WHITE);
+        client->setPlayerSign(BLACK);
+        *blackPlayer = client;
+        *gameFlow = new RemoteEnemyGameFlow(*whitePlayer, *blackPlayer, gameLogic, displayGameOnConsole);
+        return;
     }
 }
 
@@ -65,7 +70,7 @@ void gameMenu(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gam
     cout << "Please choose your enemy:" << endl;
     cout << "1. Human Player (press H)" << endl;
     cout << "2. AI player (press A)" << endl;
-    cout << "3. A remote player (press R)" << endl;
+    cout << "3. Remote player (press R)" << endl;
     cin >> playerInput;
     switch (playerInput) {
         case 'H':
@@ -90,7 +95,7 @@ void gameMenu(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gam
         case 'r':
             {
                 //the player choose a remote player as enemy
-                *gameFlow = getRemoteEnemyGameFlow(blackPlayer, whitePlayer, gameLogic, displayGameOnConsole, gameFlow);
+                createRemoteEnemyGameFlow(blackPlayer, whitePlayer, gameLogic, displayGameOnConsole, gameFlow);
                 break;
             }
     }
