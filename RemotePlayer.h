@@ -56,7 +56,7 @@ public:
     virtual ~RemotePlayer();
 
     int connectToServer();
-    string sendCell(string newCell);
+    void sendCell(string newCell);
 private:
     const char *serverIP;
     int serverPort;

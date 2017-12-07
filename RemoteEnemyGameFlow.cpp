@@ -12,6 +12,8 @@
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <sstream>
 
 RemoteEnemyGameFlow::RemoteEnemyGameFlow(Player *mySelfPlayer, Player *remoteEnemyPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole) :
         GameFlow(mySelfPlayer, remoteEnemyPlayer, gameLogic, displayGameOnConsole), mySelfPlayer(mySelfPlayer), remoteEnemyPlayer(remoteEnemyPlayer){}
@@ -42,6 +44,8 @@ void RemoteEnemyGameFlow::playTheGame() {
     string myColor, enemyColor;
     string myChoice;
     string enemyChoice;
+    ostringstream tempInt;
+    string tempStr
 
     if (mySelfPlayer->getPlayerSign() == BLACK){
         blackPlayer = mySelfPlayer;
@@ -59,14 +63,6 @@ void RemoteEnemyGameFlow::playTheGame() {
     //create a vector that will get the return value of possibleMoves function
     vector<Point> possibleMovesVector;
     int x, y;
-
-
-
-
-
-
-
-
 
 
     //running until the end of the game criteria
@@ -113,6 +109,10 @@ void RemoteEnemyGameFlow::playTheGame() {
                 }
                 //create a point from the player's input
                 Point chosenCell(x, y);
+                tempInt << x;
+                tempStr = tempInt.str();
+                tempInt << y;
+                myChoice = tempStr + "," + tempInt.str();
                 //check if the player's input is valid
                 if (this->chosenCellValidity(possibleMovesVector, chosenCell)) {
                     gameLogic->moveMaker(chosenCell, this->turn, this->nextTurn);
@@ -124,8 +124,11 @@ void RemoteEnemyGameFlow::playTheGame() {
                 }
             } while (1);
 
+
+
             try {
-                enemyChoice = client.sendCell(myChoice);
+                RemotePlayer *demoRemotePlayer = static_cast<RemotePlayer *>(this->nextTurn);
+                demoRemotePlayer->sendCell(myChoice);
                 cout << enemyColor << " played:" << " (" << enemyChoice << ")" << endl;
             } catch (const char *msg) {
                 cout << "Failed to send the new cell to server. Reason: " << msg << endl;
@@ -146,9 +149,7 @@ void RemoteEnemyGameFlow::playTheGame() {
                 cout << "Reason: " << msg << endl;
             }
 
-
-
-
+            atoi(enemyChoice.c_str());
             //downcast
             RemotePlayer *remotePlayer = static_cast<RemotePlayer *>(this->turn);
             Point chosenCell = remotePlayer->/*miniMaxAlgorithm(possibleMovesVector, gameLogic, this->nextTurn)*/;
@@ -183,4 +184,6 @@ void RemoteEnemyGameFlow::playTheGame() {
 }
 
 RemoteEnemyGameFlow::~HumanEnemyGameFlow() {
+}
+
 

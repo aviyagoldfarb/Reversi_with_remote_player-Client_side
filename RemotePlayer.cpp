@@ -76,28 +76,12 @@ int RemotePlayer::connectToServer() {
     return this->clientSocket;
 }
 
-string RemotePlayer::sendCell(string newCell) {
+void RemotePlayer::sendCell(string newCell) {
 // Write the exercise arguments to the socket
     int n = write(clientSocket, &newCell, sizeof(newCell));
     if (n == -1) {
         throw "Error writing the cell to socket";
     }
-    /**n = write(clientSocket, &op, sizeof(op));
-    if (n == -1) {
-        throw "Error writing op to socket";
-    }
-    n = write(clientSocket, &arg2, sizeof(arg2));
-    if (n == -1) {
-        throw "Error writing arg2 to socket";
-    }
-     */
-// Read the result from the server
-    string result;
-    n = read(clientSocket, &result, sizeof(result));
-    if (n == -1) {
-        throw "Error reading result from socket";
-    }
-    return result;
 }
 
 
