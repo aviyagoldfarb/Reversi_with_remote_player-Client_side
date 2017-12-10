@@ -21,11 +21,9 @@
 
 
 void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole, GameFlow **gameFlow) {
-    RemotePlayer *client = new RemotePlayer(EMPTY, "127.0.0.1", 8000);
+    RemotePlayer *client = new RemotePlayer(EMPTY, "127.0.0.1", 5000);
     int clientSocket, n;
-    string myColor, enemyColor;
-    string myChoice;
-    string enemyChoice;
+
     try {
         clientSocket = client->connectToServer();
     } catch (const char *msg) {

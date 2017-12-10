@@ -98,12 +98,14 @@ Point RemotePlayer::receiveCell() {
     if (n == -1) {
         throw "Error reading result from socket";
     }
+    cout << "finished 1st" << endl;
     // read the y coordinate argument from the socket
     n = read(clientSocket, &y, sizeof(y));
     if (n == -1) {
         throw "Error reading result from socket";
     }
     Point receivedCell(x, y);
+    cout << "finished 2nd" << endl;
     return receivedCell;
 }
 

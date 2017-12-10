@@ -16,7 +16,16 @@
 #include <sstream>
 
 RemoteEnemyGameFlow::RemoteEnemyGameFlow(Player *mySelfPlayer, Player *remoteEnemyPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole) :
-        GameFlow(mySelfPlayer, remoteEnemyPlayer, gameLogic, displayGameOnConsole), mySelfPlayer(mySelfPlayer), remoteEnemyPlayer(remoteEnemyPlayer){}
+        GameFlow(mySelfPlayer, remoteEnemyPlayer, gameLogic, displayGameOnConsole), mySelfPlayer(mySelfPlayer), remoteEnemyPlayer(remoteEnemyPlayer){
+    if (mySelfPlayer->getPlayerSign() == BLACK){
+        blackPlayer = mySelfPlayer;
+        whitePlayer = remoteEnemyPlayer;
+    }
+    else{
+        blackPlayer = remoteEnemyPlayer;
+        whitePlayer = mySelfPlayer;
+    }
+}
 
 bool RemoteEnemyGameFlow::chosenCellValidity(vector<Point> possibleMovesVector, Point chosenCell){
     for(int i = 0; i < possibleMovesVector.size(); i++){
@@ -40,14 +49,12 @@ void RemoteEnemyGameFlow::setNextTurn(){
 
 void RemoteEnemyGameFlow::playTheGame() {
 
-    int clientSocket, n;
-
     //create a vector that will get the return value of possibleMoves function
     vector<Point> possibleMovesVector;
     int x, y;
 
     Point receivedCell(0, 0);
-
+/*
     if (mySelfPlayer->getPlayerSign() == BLACK){
         blackPlayer = mySelfPlayer;
         whitePlayer = remoteEnemyPlayer;
@@ -56,7 +63,7 @@ void RemoteEnemyGameFlow::playTheGame() {
         blackPlayer = remoteEnemyPlayer;
         whitePlayer = mySelfPlayer;
     }
-
+*/
     //initialize the turns
     this->turn = blackPlayer;
     this->nextTurn = whitePlayer;
@@ -138,7 +145,7 @@ void RemoteEnemyGameFlow::playTheGame() {
             cout << "Waiting for other player to make his move..." << endl;
             try {
                 //down cast
-                RemotePlayer *demoRemotePlayer = static_cast<RemotePlayer *>(this->nextTurn);
+                RemotePlayer *demoRemotePlayer = static_cast<RemotePlayer *>(this->turn);
                 Point chosenCell = demoRemotePlayer->receiveCell();
                 receivedCell.setX(chosenCell.getX());
                 receivedCell.setY(chosenCell.getY());
