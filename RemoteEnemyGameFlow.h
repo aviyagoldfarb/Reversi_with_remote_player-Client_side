@@ -39,7 +39,7 @@ public:
     /**
      * destructor of HumanEnemyGameFlow object.
      */
-    virtual ~HumanEnemyGameFlow();
+    virtual ~RemoteEnemyGameFlow();
 private:
     //pointers to Player
     Player *mySelfPlayer, *remoteEnemyPlayer;

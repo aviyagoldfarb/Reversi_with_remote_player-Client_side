@@ -13,7 +13,7 @@
 
 using namespace std;
 
-RemotePlayer::RemotePlayer(Sign playerSign = EMPTY, const char *serverIP, int serverPort):
+RemotePlayer::RemotePlayer(Sign playerSign, const char *serverIP, int serverPort):
         Player(playerSign), serverIP(serverIP), serverPort(serverPort), clientSocket(0) {
     cout << "RemotePlayer" << endl;
 }
@@ -76,14 +76,36 @@ int RemotePlayer::connectToServer() {
     return this->clientSocket;
 }
 
-void RemotePlayer::sendCell(string newCell) {
-// Write the exercise arguments to the socket
-    int n = write(clientSocket, &newCell, sizeof(newCell));
+void RemotePlayer::sendCell(int x, int y) {
+    int n;
+    // write the x coordinate argument to the socket
+    n = write(clientSocket, &x, sizeof(x));
     if (n == -1) {
-        throw "Error writing the cell to socket";
+        throw "Error in writing the cell to socket";
+    }
+    // write the y coordinate argument to the socket
+    n = write(clientSocket, &y, sizeof(y));
+    if (n == -1) {
+        throw "Error in writing the cell to socket";
     }
 }
 
+Point RemotePlayer::receiveCell() {
+    int x, y;
+    int n;
+    // read the x coordinate argument from the socket
+    n = read(clientSocket, &x, sizeof(x));
+    if (n == -1) {
+        throw "Error reading result from socket";
+    }
+    // read the y coordinate argument from the socket
+    n = read(clientSocket, &y, sizeof(y));
+    if (n == -1) {
+        throw "Error reading result from socket";
+    }
+    Point receivedCell(x, y);
+    return receivedCell;
+}
 
 
 

@@ -27,9 +27,9 @@ void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abstr
     string myChoice;
     string enemyChoice;
     try {
-        clientSocket = client.connectToServer();
+        clientSocket = client->connectToServer();
     } catch (const char *msg) {
-        cout << "Failed to connect to server. Reason:" << msg << endl;
+        cout << "Failed in connect to server. Reason:" << msg << endl;
         exit(-1);
     }
     int myNumberColor;
@@ -43,9 +43,7 @@ void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abstr
     }
 
     if (myNumberColor == 1) {
-        myColor = "X";
-        enemyColor = "O";
-        cout << "You are X." << endl;
+        cout << "You are the black player X." << endl;
         *blackPlayer = new HumanPlayer(BLACK);
         client->setPlayerSign(WHITE);
         *whitePlayer = client;
@@ -53,9 +51,7 @@ void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abstr
         return;
     }
     if (myNumberColor == 2) {
-        myColor = "O";
-        enemyColor = "X";
-        cout << "You are O." << endl;
+        cout << "You are the white player O." << endl;
         *whitePlayer = new HumanPlayer(WHITE);
         client->setPlayerSign(BLACK);
         *blackPlayer = client;
@@ -95,6 +91,7 @@ void gameMenu(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gam
         case 'r':
             {
                 //the player choose a remote player as enemy
+                cout << "Waiting for the other player to join..." << endl;
                 createRemoteEnemyGameFlow(blackPlayer, whitePlayer, gameLogic, displayGameOnConsole, gameFlow);
                 break;
             }

@@ -6,6 +6,9 @@
 #define EX4_REMOTEPLAYER_H
 
 #include "Player.h"
+
+#include "Point.h"
+
 /*
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -23,7 +26,7 @@ public:
      * @param serverIP
      * @param serverPort
      */
-    RemotePlayer(Sign playerSign = EMPTY, const char *serverIP, int serverPort);
+    RemotePlayer(Sign playerSign, const char *serverIP, int serverPort);
 
     /**
      * copy constructor.
@@ -56,7 +59,8 @@ public:
     virtual ~RemotePlayer();
 
     int connectToServer();
-    void sendCell(string newCell);
+    void sendCell(int x, int y);
+    Point receiveCell();
 private:
     const char *serverIP;
     int serverPort;
