@@ -1,9 +1,8 @@
 //
-// Created by udi on 04/12/17.
+// Udi Goldman 301683264 , Aviya Goldfarb 201509635
 //
 
 #include "RemotePlayer.h"
-#include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -15,7 +14,6 @@ using namespace std;
 
 RemotePlayer::RemotePlayer(Sign playerSign, const char *serverIP, int serverPort):
         Player(playerSign), serverIP(serverIP), serverPort(serverPort), clientSocket(0) {
-    cout << "RemotePlayer" << endl;
 }
 
 RemotePlayer::RemotePlayer(RemotePlayer *otherPlayer) : Player(otherPlayer){
@@ -71,8 +69,8 @@ int RemotePlayer::connectToServer() {
     if (connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
         throw "Error connecting to server";
     }
-    cout << "Connected to server" << endl;
-    cout << "Waiting for other player to join..." << endl;
+    //cout << "Connected to server" << endl;
+    //cout << "Waiting for the other player to join..." << endl;
     return this->clientSocket;
 }
 
@@ -98,14 +96,12 @@ Point RemotePlayer::receiveCell() {
     if (n == -1) {
         throw "Error reading result from socket";
     }
-    cout << "finished 1st" << endl;
     // read the y coordinate argument from the socket
     n = read(clientSocket, &y, sizeof(y));
     if (n == -1) {
         throw "Error reading result from socket";
     }
     Point receivedCell(x, y);
-    cout << "finished 2nd" << endl;
     return receivedCell;
 }
 

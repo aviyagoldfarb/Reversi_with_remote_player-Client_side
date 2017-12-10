@@ -1,23 +1,13 @@
 //
-// Created by udi on 04/12/17.
+// Udi Goldman 301683264 , Aviya Goldfarb 201509635
 //
 
 #ifndef EX4_REMOTEPLAYER_H
 #define EX4_REMOTEPLAYER_H
 
 #include "Player.h"
-
 #include "Point.h"
 
-/*
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <string.h>
-#include <unistd.h>
-*/
 class RemotePlayer: public Player{
 public:
     /**
@@ -54,18 +44,29 @@ public:
      */
     void setPlayerScore(int addToPlayerScore);
     /**
-     * destructor of HumanPlayer object.
+     * destructor of RemotePlayer object.
      */
     virtual ~RemotePlayer();
-
+    /**
+     * connect to server
+     * @return
+     */
     int connectToServer();
+    /**
+     * send cell to the server
+     * @param x coordinate
+     * @param y coordinate
+     */
     void sendCell(int x, int y);
+    /**
+     * receive cell from the server
+     * @return
+     */
     Point receiveCell();
 private:
     const char *serverIP;
     int serverPort;
     int clientSocket;
 };
-
 
 #endif //EX4_REMOTEPLAYER_H

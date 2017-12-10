@@ -10,20 +10,23 @@
 #include "AIEnemyGameFlow.h"
 #include "RemotePlayer.h"
 #include "RemoteEnemyGameFlow.h"
-#include <iostream>
 #include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
 #include <unistd.h>
+#include <fstream>
 
-
+using namespace std;
 
 void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole, GameFlow **gameFlow) {
-    RemotePlayer *client = new RemotePlayer(EMPTY, "127.0.0.1", 5000);
+    //read the ip and the port from the configuration file
+    string ip;
+    int port;
+    ifstream inFile;
+    inFile.open("../client_configuration_file.txt");
+    inFile >> ip;
+    inFile >> port;
+    //create a RemotePlayer client
+    RemotePlayer *client = new RemotePlayer(EMPTY, ip.c_str(), port);
     int clientSocket, n;
-
     try {
         clientSocket = client->connectToServer();
     } catch (const char *msg) {
@@ -39,9 +42,13 @@ void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abstr
     } catch(const char *msg) {
         cout << "Reason: " << msg << endl;
     }
-
+    //check the 'color' (sign) of the player who plays in this computer
     if (myNumberColor == 1) {
+        cout << "Connected to server" << endl;
+        cout << "Waiting for the other player to join..." << endl;
+        cout << endl;
         cout << "You are the black player X." << endl;
+        cout << endl;
         *blackPlayer = new HumanPlayer(BLACK);
         client->setPlayerSign(WHITE);
         *whitePlayer = client;
@@ -49,7 +56,9 @@ void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abstr
         return;
     }
     if (myNumberColor == 2) {
+        cout << endl;
         cout << "You are the white player O." << endl;
+        cout << endl;
         *whitePlayer = new HumanPlayer(WHITE);
         client->setPlayerSign(BLACK);
         *blackPlayer = client;
@@ -57,7 +66,6 @@ void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abstr
         return;
     }
 }
-
 
 void gameMenu(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole, GameFlow **gameFlow){
     char playerInput;
@@ -89,7 +97,6 @@ void gameMenu(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gam
         case 'r':
             {
                 //the player choose a remote player as enemy
-                cout << "Waiting for the other player to join..." << endl;
                 createRemoteEnemyGameFlow(blackPlayer, whitePlayer, gameLogic, displayGameOnConsole, gameFlow);
                 break;
             }
@@ -97,10 +104,9 @@ void gameMenu(Player **blackPlayer, Player **whitePlayer, AbstractGameLogic *gam
 }
 
 int main() {
-
     //creating an instance of Board object
     Board *board = new Board();
-   // Player *blackPlayer = new HumanPlayer(BLACK);
+    // Player *blackPlayer = new HumanPlayer(BLACK);
     Player *blackPlayer;
     Player *whitePlayer;
     AbstractGameLogic *gameLogic = new GameLogic(board);

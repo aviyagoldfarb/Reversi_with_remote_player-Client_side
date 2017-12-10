@@ -4,15 +4,6 @@
 
 #include "RemotePlayer.h"
 #include "RemoteEnemyGameFlow.h"
-#include <iostream>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdio.h>
 #include <sstream>
 
 RemoteEnemyGameFlow::RemoteEnemyGameFlow(Player *mySelfPlayer, Player *remoteEnemyPlayer, AbstractGameLogic *gameLogic, DisplayGame *displayGameOnConsole) :
@@ -74,6 +65,7 @@ void RemoteEnemyGameFlow::playTheGame() {
         cout << endl;
         //printing the board using printGameBoard function from DisplayGameOnConsole class
         this->displayGameOnConsole->printGameBoard();
+/*
         cout << string(1, this->turn->getPlayerSign()) << ":" << " It's your move." << endl;
         //check for the possible moves
         possibleMovesVector = gameLogic->possibleMoves(this->turn, this->nextTurn);
@@ -103,11 +95,41 @@ void RemoteEnemyGameFlow::playTheGame() {
         }
         cout << endl;
         cout << endl;
-
-
+*/
 
         //check if the current player is the player who plays in this computer
         if(this->turn->getPlayerSign() == mySelfPlayer->getPlayerSign()){
+/**/
+            cout << string(1, this->turn->getPlayerSign()) << ":" << " It's your move." << endl;
+            //check for the possible moves
+            possibleMovesVector = gameLogic->possibleMoves(this->turn, this->nextTurn);
+            //check if the vector is empty
+            if(possibleMovesVector.size() == 0){
+                cout << "No possible moves. Play passes back to other player." << endl;
+                cout << endl;
+
+                try {
+                    //down cast
+                    RemotePlayer *demoRemotePlayer = static_cast<RemotePlayer *>(this->nextTurn);
+                    demoRemotePlayer->sendCell(0, 0);
+                } catch (const char *msg) {
+                    cout << "Failed to send the new cell to server. Reason: " << msg << endl;
+                }
+
+                this->setNextTurn();
+                continue;
+            }
+            cout << "Your possible moves: ";
+            //display the optional cells
+            for(int i = 0; i < possibleMovesVector.size(); i++){
+                possibleMovesVector[i].pointToPrint();
+                if(i < possibleMovesVector.size() - 1){
+                    cout << ",";
+                }
+            }
+            cout << endl;
+            cout << endl;
+/**/
             //loop until the player enters appropriate cell
             do {
                 cout << "Please enter your move row col: ";
