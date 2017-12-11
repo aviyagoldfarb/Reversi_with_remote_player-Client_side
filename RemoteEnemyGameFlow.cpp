@@ -45,16 +45,7 @@ void RemoteEnemyGameFlow::playTheGame() {
     int x, y;
 
     Point receivedCell(0, 0);
-/*
-    if (mySelfPlayer->getPlayerSign() == BLACK){
-        blackPlayer = mySelfPlayer;
-        whitePlayer = remoteEnemyPlayer;
-    }
-    else{
-        blackPlayer = remoteEnemyPlayer;
-        whitePlayer = mySelfPlayer;
-    }
-*/
+
     //initialize the turns
     this->turn = blackPlayer;
     this->nextTurn = whitePlayer;
@@ -65,37 +56,6 @@ void RemoteEnemyGameFlow::playTheGame() {
         cout << endl;
         //printing the board using printGameBoard function from DisplayGameOnConsole class
         this->displayGameOnConsole->printGameBoard();
-/*
-        cout << string(1, this->turn->getPlayerSign()) << ":" << " It's your move." << endl;
-        //check for the possible moves
-        possibleMovesVector = gameLogic->possibleMoves(this->turn, this->nextTurn);
-        //check if the vector is empty
-        if(possibleMovesVector.size() == 0){
-            cout << "No possible moves. Play passes back to other player." << endl;
-            cout << endl;
-
-            try {
-                //down cast
-                RemotePlayer *demoRemotePlayer = static_cast<RemotePlayer *>(this->nextTurn);
-                demoRemotePlayer->sendCell(0, 0);
-            } catch (const char *msg) {
-                cout << "Failed to send the new cell to server. Reason: " << msg << endl;
-            }
-
-            this->setNextTurn();
-            continue;
-        }
-        cout << "Your possible moves: ";
-        //display the optional cells
-        for(int i = 0; i < possibleMovesVector.size(); i++){
-            possibleMovesVector[i].pointToPrint();
-            if(i < possibleMovesVector.size() - 1){
-                cout << ",";
-            }
-        }
-        cout << endl;
-        cout << endl;
-*/
 
         //check if the current player is the player who plays in this computer
         if(this->turn->getPlayerSign() == mySelfPlayer->getPlayerSign()){
@@ -107,7 +67,7 @@ void RemoteEnemyGameFlow::playTheGame() {
             if(possibleMovesVector.size() == 0){
                 cout << "No possible moves. Play passes back to other player." << endl;
                 cout << endl;
-
+                //send to the other player the cell (0, 0) to let him know that there was no move
                 try {
                     //down cast
                     RemotePlayer *demoRemotePlayer = static_cast<RemotePlayer *>(this->nextTurn);
@@ -174,7 +134,7 @@ void RemoteEnemyGameFlow::playTheGame() {
             } catch (const char *msg) {
                 cout << "Failed to receive the new cell from server. Reason: " << msg << endl;
             }
-
+            //if the received cell is (0, 0) do nothing
             if (receivedCell.getX() != 0 && receivedCell.getY() != 0){
                 gameLogic->moveMaker(receivedCell, this->turn, this->nextTurn);
                 cout << "Remote player choose ";
@@ -194,13 +154,12 @@ void RemoteEnemyGameFlow::playTheGame() {
     if(this->turn == this->remoteEnemyPlayer){
         try {
             //down cast
-            RemotePlayer *demoRemotePlayer = static_cast<RemotePlayer *>(this->nextTurn);
+            RemotePlayer *demoRemotePlayer = static_cast<RemotePlayer *>(this->turn);
             demoRemotePlayer->sendCell(-1, -1);
         } catch (const char *msg) {
             cout << "Failed to send the message about the end of the game. Reason: " << msg << endl;
         }
     }
-
     //printing the board using printGameBoard function from DisplayGameOnConsole class
     this->displayGameOnConsole->printGameBoard();
     cout << endl;

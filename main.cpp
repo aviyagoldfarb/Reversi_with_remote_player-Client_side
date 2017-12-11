@@ -44,7 +44,6 @@ void createRemoteEnemyGameFlow(Player **blackPlayer, Player **whitePlayer, Abstr
     }
     //check the 'color' (sign) of the player who plays in this computer
     if (myNumberColor == 1) {
-        cout << "Connected to server" << endl;
         cout << "Waiting for the other player to join..." << endl;
         cout << endl;
         cout << "You are the black player X." << endl;

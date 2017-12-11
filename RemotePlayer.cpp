@@ -69,8 +69,7 @@ int RemotePlayer::connectToServer() {
     if (connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
         throw "Error connecting to server";
     }
-    //cout << "Connected to server" << endl;
-    //cout << "Waiting for the other player to join..." << endl;
+    cout << "Connected to server" << endl;
     return this->clientSocket;
 }
 
